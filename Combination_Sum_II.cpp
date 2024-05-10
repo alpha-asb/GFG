@@ -9,29 +9,33 @@ using namespace std;
 
 class Solution{
 public:
-   set<vector<int>>st;
-   void CodeGenius(vector<int>&arr,int n,int k,int i,vector<int>&temp){
-       if(k<0)return;
-       if(i==n){
-           if(k==0) st.insert(temp);
-           return;
-       }
-       temp.push_back(arr[i]);
-       CodeGenius(arr,n,k-arr[i],i+1,temp);
-       temp.pop_back();
-       CodeGenius(arr,n,k,i+1,temp);
-       
-   }
+    set<vector<int>>res;
+    void solve(vector<int> &arr,int sum,vector<int>&temp,int i,int n){
+        if(sum<0){return;}
+        if(sum==0){res.insert(temp); return;}
+           
+        if(i == n){
+            return;
+        }
+        // Include current element
+        temp.push_back(arr[i]);
+        solve(arr, sum - arr[i], temp, i + 1,n);
+        temp.pop_back(); // Backtrack
+        solve(arr, sum, temp, i + 1,n);
+        
+    }
+    
     vector<vector<int>> CombinationSum2(vector<int> arr,int n,int k)
     {
-        vector<int> temp;
-        vector<vector<int>>ans;
+        //code here
+        vector<int>temp;
         sort(arr.begin(),arr.end());
-        CodeGenius(arr,n,k,0,temp);
-        for(auto it :st){
-            ans.push_back(it);
+        solve(arr,k,temp,0,n);
+        vector<vector<int>>result;
+        for(auto it:res){
+            result.push_back(it);
         }
-        return ans;
+        return result;
     }
 };
 
