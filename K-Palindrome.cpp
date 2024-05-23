@@ -1,29 +1,35 @@
 /*
 class Solution{
 public:
-    int solve(string &str, int n,int l,int r){
-        if(l==r){
+    int solve(string &str, int n,int l,int r,vector<vector<int>>&dp){
+        if(dp[l][r] !=-1){
+            return dp[l][r];
+        }
+        if(l>=r){
             return 0;
         }
         if(r == l+1){
             return (str[l]==str[r])?0:1;
         }
         if(str[l] == str[r]){
-           return solve(str,n,l+1,r-1);
+           return dp[l][r]=solve(str,n,l+1,r-1,dp);
         }
         else{
-            return min(1+solve(str,n,l,r-1),1+solve(str,n,l+1,r));
+            return dp[l][r]=min(1+solve(str,n,l,r-1,dp),1+solve(str,n,l+1,r,dp));
         }
     }
     int kPalindrome(string str, int n, int k)
     {
         // code here
-        int count = solve(str,n,0,n-1);
+        vector<vector<int>> dp(n, vector<int>(n, -1));
+        int count = solve(str,n,0,n-1,dp);
         // cout<<count;
         return count<=k;
     }
 };
 */
+
+
 class Solution {
 public:
     int kPalindrome(string str, int n, int k) {
